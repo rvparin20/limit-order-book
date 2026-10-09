@@ -1,4 +1,5 @@
 # Limit Order Book: C++17
+![CI](https://github.com/rvparin20/limit-order-book/actions/workflows/c-cpp.yml/badge.svg)
 
 A single-instrument, price-time priority matching engine supporting **limit**, **market** and **cancel** orders. It is built for low, predictable latency: no heap allocation on the hot path, O(1) price-level access and O(1) cancels.
 
