@@ -31,16 +31,16 @@ No dependencies beyond a C++17 compiler (GCC or Clang) and CMake.
 
 ## Results
 
-2M operations of synthetic flow (55% limit, 38% cancel, 7% market; 10% of limits cross the spread). Mid price follows a random walk. Ran on a shared Linux cloud VM with GCC 13 at `-O3`, across 3 seeds:
+2M operations of synthetic flow (55% limit, 38% cancel, 7% market; 10% of limits cross the spread). Mid price follows a random walk. Run in a GitHub Codespace (GCC 13.3, `-O3`, seed 42):
 
 | | Throughput | p50 | p99 | p99.9 |
 |---|---|---|---|---|
-| **OrderBook** (pool + flat arrays) | **29–37 M ops/s** | **~46 ns** | 270–360 ns | ~540–590 ns |
-| Baseline (`std::map` + `std::list`) | 12–13 M ops/s | ~95 ns | 360–460 ns | 650–1000 ns |
+| **OrderBook** (pool + flat arrays) | **45.0 M ops/s** | **45 ns** | 150 ns | 440 ns |
+| Baseline (`std::map` + `std::list`) | 12.2 M ops/s | 81 ns | 265 ns | 386 ns |
 
-**About 2.3–3.0× throughput and about 2× faster median latency** compared with the standard-container baseline. Latency includes ~20 ns of `steady_clock` overhead per sample. Run the benchmark on your own machine for numbers you can quote.
+About **3.7x throughput** and about **1.8x lower median and p99 latency** than the standard-container baseline. Latency includes ~20 ns of `steady_clock` overhead per sample, and results vary by machine and run, so run `./build/lob_bench` yourself.
 
-**Honest observation:** the p99 gain is smaller than the median gain. Tail operations are mostly market and crossing orders that sweep several levels, so the cost is the matching work itself rather than data-structure overhead. Further work would target that.
+**Honest observation:** the p99.9 tail is comparable (440 ns vs 386 ns). Tail operations are mostly market and crossing orders that sweep several price levels, so the cost is the matching work itself rather than data-structure overhead. Further work would target that.
 
 ## Tests
 
